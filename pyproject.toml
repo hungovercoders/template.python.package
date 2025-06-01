@@ -1,6 +1,6 @@
 [project]
 name = "hungovercoders_template_python_package"
-version = "0.1.0"
+version = "0.1.1"
 description = "This is a template for a Python package created by Hungover Coders."
 license = { file = "LICENSE" }
 readme = "README.md"

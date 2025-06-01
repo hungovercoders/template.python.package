@@ -2,7 +2,7 @@
 
 ## Initialise Repo and Environment
 
-1. **Created a new repository on GitHub.**
+1. **Created a new repository on [GitHub](https://github.com/).**
       - Gave an appropriate name and description.
       - Added a README file.
       - Added a .gitignore file for Python.
@@ -10,11 +10,11 @@
 
     ![Github Repo](./images/github_create_repo.png)
 
-1. **Added Copilot Context File**
+1. **Added [Copilot Context File](https://docs.github.com/en/copilot/customizing-copilot/adding-repository-custom-instructions-for-github-copilot)**
       - Created a [`.github/copilot-instructions.md`](https://github.com/hungovercoders/template.python.package/blob/main/.github/copilot-instructions.md){target="_blank"} file to provide context for Copilot.
 
 1. **Opened in codespaces and amended environment configuration.**
-      - Added a [`devcontainer.json`](https://github.com/hungovercoders/template.python.package/blob/main/.devcontainer/devcontainer.json){target="_blank"} file to configure the development environment.
+      - Added a [`devcontainer.json`](https://github.com/hungovercoders/template.python.package/blob/main/.devcontainer/devcontainer.json){target="_blank"} file to configure the development environment using [devcontainers](https://code.visualstudio.com/docs/remote/devcontainer){target="_blank"} standards in [vs code](https://code.visualstudio.com/docs/devcontainers/containers){target="_blank"}.
       - Added a [requirements_dev](https://github.com/hungovercoders/template.python.package/blob/main/.devcontainer/requirements_dev.txt){target="_blank"} file for the packages required for development.
       - Added a [requirements_docs](https://github.com/hungovercoders/template.python.package/blob/main/.devcontainer/requirements_docs.txt){target="_blank"} file for the packages required for documentation.
 
@@ -78,5 +78,9 @@
       - Amended `.github/workflows/gh-pages.yml` file to include a step to generate the changelog automatically.
 
 ## Initialise Package
+
+```bash
+uv init --lib hungovercoders_template_python_package
+```
 
 ## Publish Package to PyPI

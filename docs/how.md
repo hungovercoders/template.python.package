@@ -158,3 +158,34 @@
 
 
 ## Publish Package to PyPI
+
+1. **Created a PyPI account**
+      - Created an account on [PyPI](https://pypi.org/account/register/){target="_blank"}.
+      - Created an API token for the account.
+      - Added the PyPI credentials to the GitHub repository secrets as `PYPI_API_TOKEN`.
+
+1. **Amended the CI workflow**
+      - Amended the [`.github/workflows/ci.yml`](https://github.com/hungovercoders/template.python.package/blob/main/.github/workflows/ci.yml){target="_blank"} file to include a step to publish the package to PyPI if a new tag is pushed.
+
+1. **Create tag and push script**
+      - Created a [`tag_and_push.sh`](https://github.com/hungovercoders/template.python.package/blob/main/scripts/tag_and_push.sh){target="_blank"} script to create a new tag and push it to the remote repository.
+
+1. **Pypi confirmation**
+      - Confirmed the package is available on PyPI by visiting [https://pypi.org/project/hungovercoders-template-python-package/](https://pypi.org/project/hungovercoders-template-python-package/){target="_blank"}.
+      - Confirmed the package can be installed using:
+
+      ```bash
+      pip install hungovercoders-template-python-package
+      ```
+
+      - Confirmed the package is working by running:
+
+      ```bash
+      hungovercoders-template-hello --name griff
+      ```
+
+      - Output should be:
+
+      ```
+      Hungovercoders say hello to griff!
+      ```

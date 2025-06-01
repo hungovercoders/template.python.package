@@ -33,10 +33,22 @@ jobs:
         run: |
           pip install -e .
 
-      - name: Run tests
+      - name: Run tests and generate JUnit XML
         run: |
           pip install pytest
-          pytest
+          pytest --junitxml=pytest-results.xml
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        with:
+          name: pytest-results
+          path: pytest-results.xml
+
+      - name: Publish Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        if: always()
+        with:
+          files: pytest-results.xml
 
       - name: Build distribution
         run: |

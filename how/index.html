@@ -557,7 +557,7 @@ pip list</code></p>
 <li>
 <p><strong>Added tests for the package</strong></p>
 <ul>
-<li>Created a [<code>tests</code>] directory with an initial <a href="https://github.com/hungovercoders/template.python.package/blob/main/tests/test_hello.py" target="_blank"><code>test_hello.py</code></a> file.</li>
+<li>Created a [<code>tests</code>] directory with an initial <a href="https://github.com/hungovercoders/template.python.package/blob/main/tests/test_greetings.py" target="_blank"><code>test_greetings.py</code></a> file.</li>
 <li>Utilised <a href="https://docs.pytest.org/en/stable/" target="_blank">pytest</a> for testing, installed as part of devcontainer setup by running: </li>
 </ul>
 <p><code>bash
@@ -568,31 +568,39 @@ pip list</code></p>
 <li>
 <p><strong>Linted the code</strong></p>
 <ul>
-<li>Utilised <a href="https://github.com/charliermarsh/ruff" target="_blank">ruff</a> for linting, installed as part of devcontainer setup.</li>
-</ul>
+<li>
+<p>Utilised <a href="https://github.com/charliermarsh/ruff" target="_blank">ruff</a> for linting, installed as part of devcontainer setup.</p>
 </li>
 <li>
 <p>Confirmed code is linted and follows best practices by running the command.</p>
 </li>
-</ol>
+</ul>
 <p><code>bash
-   uvx ruff check .</code></p>
-<ol>
-<li><strong>Checked distribution files</strong></li>
+  uvx ruff check .</code></p>
+</li>
+<li>
+<p><strong>Checked distribution files</strong></p>
+<ul>
 <li>Utilised <a href="https://twine.readthedocs.io/en/stable/" target="_blank">twine</a> to check the distribution files.</li>
 <li>Created the distribution files using:</li>
-</ol>
+</ul>
 <p><code>bash
-   uv build</code></p>
+  uv build</code></p>
 <ul>
 <li>Checked the distribution files using:</li>
 </ul>
-<p><code>bashuv 
-   uvx twine check dist/*</code></p>
-<ol>
-<li><strong>Created github actions to run tests and linting on pull requests and pushes to main branch.</strong></li>
-<li>Created a <a href="https://github.com/hungovercoders/template.python.package/blob/main/.github/workflows/ci.yml" target="_blank"><code>.github/workflows/ci.yml</code></a> file with the necessary steps to run tests and linting.</li>
+<p><code>bash
+  uvx twine check dist/*</code></p>
+</li>
+<li>
+<p><strong>Created github actions to run linting, distribution and testing on pull requests and pushes to main branch.</strong></p>
+<ul>
+<li>Created a <a href="https://github.com/hungovercoders/template.python.package/blob/main/.github/workflows/ci.yml" target="_blank"><code>.github/workflows/ci.yml</code></a> file with the necessary steps to run linting, distribution checks and testing.</li>
 <li>Confirmed working by pushing changes and checking the actions tab in GitHub.</li>
+<li>Test results can be seen to be published correctly.
+     <img alt="CI Output" src="../images/ci_output.PNG" /></li>
+</ul>
+</li>
 </ol>
 <h2 id="publish-package-to-pypi">Publish Package to PyPI</h2>
 

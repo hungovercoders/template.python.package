@@ -19,7 +19,9 @@
         "usernamehw",
         "vivaxy",
         "xdist",
-        "yzhang"
+        "yzhang",
+        "pypi",
+        "pypa"
     ],
     "python.testing.pytestArgs": [
         "tests"

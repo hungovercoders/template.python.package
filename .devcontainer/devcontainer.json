@@ -23,5 +23,5 @@
 			]
 		}
 	},
-	"postCreateCommand":  "pip install -r requirements_dev.txt && pip install -r requirements_docs.txt"
+	"postCreateCommand": "./.devcontainer/setup.sh"
 }

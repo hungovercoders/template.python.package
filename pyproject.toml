@@ -16,3 +16,4 @@ build-backend = "hatchling.build"
 
 [project.scripts]
 hungovercoders-template-hello = "hungovercoders_template_python_package.greetings:hello_cli"
+hungovercoders-validate-organisation = "hungovercoders_template_python_package.organisation:main"

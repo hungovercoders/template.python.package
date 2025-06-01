@@ -189,3 +189,17 @@
       ```
       Hungovercoders say hello to griff!
       ```
+
+## Added Schema Validation
+
+```bash
+hungovercoders-validate-organisation /workspaces/template.python.package/tests/examples/organisation.json 
+```
+
+```bash
+hungovercoders-validate-organisation /workspaces/template.python.package/tests/examples/organisation.json --output-format json
+```
+
+```bash
+hungovercoders-validate-organisation --show-schema
+```

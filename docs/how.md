@@ -118,7 +118,7 @@
       ```
 
 1. **Added tests for the package**
-      - Created a [`tests`] directory with an initial [`test_hello.py`](https://github.com/hungovercoders/template.python.package/blob/main/tests/test_hello.py){target="_blank"} file.
+      - Created a [`tests`] directory with an initial [`test_greetings.py`](https://github.com/hungovercoders/template.python.package/blob/main/tests/test_greetings.py){target="_blank"} file.
       - Utilised [pytest](https://docs.pytest.org/en/stable/){target="_blank"} for testing, installed as part of devcontainer setup by running: 
   
       ```bash
@@ -130,28 +130,31 @@
 1. **Linted the code**
       - Utilised [ruff](https://github.com/charliermarsh/ruff){target="_blank"} for linting, installed as part of devcontainer setup.
 
-   - Confirmed code is linted and follows best practices by running the command.
+      - Confirmed code is linted and follows best practices by running the command.
 
-   ```bash
-   uvx ruff check .
-   ```
+      ```bash
+      uvx ruff check .
+      ```
 
 1. **Checked distribution files**
-   - Utilised [twine](https://twine.readthedocs.io/en/stable/){target="_blank"} to check the distribution files.
-   - Created the distribution files using:
+      - Utilised [twine](https://twine.readthedocs.io/en/stable/){target="_blank"} to check the distribution files.
+      - Created the distribution files using:
 
-   ```bash
-   uv build
-   ```
+      ```bash
+      uv build
+      ```
 
-   - Checked the distribution files using:
+      - Checked the distribution files using:
 
-   ```bashuv 
-   uvx twine check dist/*
-   ```
+      ```bash
+      uvx twine check dist/*
+      ```
 
-1. **Created github actions to run tests and linting on pull requests and pushes to main branch.**
-   - Created a [`.github/workflows/ci.yml`](https://github.com/hungovercoders/template.python.package/blob/main/.github/workflows/ci.yml){target="_blank"} file with the necessary steps to run tests and linting.
-   - Confirmed working by pushing changes and checking the actions tab in GitHub.
+1. **Created github actions to run linting, distribution and testing on pull requests and pushes to main branch.**
+      - Created a [`.github/workflows/ci.yml`](https://github.com/hungovercoders/template.python.package/blob/main/.github/workflows/ci.yml){target="_blank"} file with the necessary steps to run linting, distribution checks and testing.
+      - Confirmed working by pushing changes and checking the actions tab in GitHub.
+      - Test results can be seen to be published correctly.
+         ![CI Output](./images/ci_output.PNG)
+
 
 ## Publish Package to PyPI

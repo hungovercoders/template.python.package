@@ -322,15 +322,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#create-changelog" class="md-nav__link">
-    <span class="md-ellipsis">
-      Create Changelog
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#publish-package-to-pypi" class="md-nav__link">
     <span class="md-ellipsis">
       Publish Package to PyPI
@@ -404,15 +395,6 @@
   <a href="#initialise-package" class="md-nav__link">
     <span class="md-ellipsis">
       Initialise Package
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#create-changelog" class="md-nav__link">
-    <span class="md-ellipsis">
-      Create Changelog
     </span>
   </a>
   
@@ -526,11 +508,19 @@ pip list</code></p>
 <li>Confirmed working by running:</li>
 </ul>
 <p><code>bash
-  cliff build --strict</code></p>
+  git-cliff -c cliff.toml</code></p>
+<ul>
+<li>Can see changelog file populated.</li>
+</ul>
+</li>
+<li>
+<p><strong>Added a GitHub Action to automatically generate the changelog</strong></p>
+<ul>
+<li>Amended <code>.github/workflows/gh-pages.yml</code> file to include a step to generate the changelog automatically.</li>
+</ul>
 </li>
 </ol>
 <h2 id="initialise-package">Initialise Package</h2>
-<h2 id="create-changelog">Create Changelog</h2>
 <h2 id="publish-package-to-pypi">Publish Package to PyPI</h2>
 
 

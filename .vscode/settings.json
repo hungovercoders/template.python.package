@@ -1,9 +1,12 @@
 {
     "cSpell.words": [
+        "capsys",
+        "charliermarsh",
         "devcontainers",
         "docstrings",
         "errorlens",
         "Initalised",
+        "Linted",
         "mkdocs",
         "mypy",
         "pylance",

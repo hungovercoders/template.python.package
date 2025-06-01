@@ -2,8 +2,6 @@
 Unit tests for greetings.py
 """
 import sys
-import types
-import pytest
 from hungovercoders_template_python_package import greetings
 
 

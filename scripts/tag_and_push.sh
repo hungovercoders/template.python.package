@@ -5,7 +5,7 @@ set -e
 
 # TODO: ensure linting, distribution and tests are successful before tagging
 
-PYPROJECT="hungovercoders_repo_tools/pyproject.toml"
+PYPROJECT="pyproject.toml"
 VERSION=$(grep '^version' "$PYPROJECT" | head -1 | cut -d '"' -f2)
 TAG="v$VERSION"
 

@@ -13,7 +13,7 @@ def hello_cli() -> None:
 
 def goodbye(name: str) -> None:
     """Farewell the user by name."""
-    print(f"Hungovercoders say goodbye to {name}!")
+    print("Hungovercoders say goodbye to ted!")
 
 def goodbye_cli() -> None:
     """CLI entry point for farewell."""

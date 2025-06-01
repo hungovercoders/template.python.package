@@ -69,11 +69,14 @@
       - Confirmed working by running:
 
       ```bash
-      cliff build --strict
+      git-cliff -c cliff.toml
       ```
 
-## Initialise Package
+      - Can see changelog file populated.
 
-## Create Changelog
+2. **Added a GitHub Action to automatically generate the changelog**
+      - Amended `.github/workflows/gh-pages.yml` file to include a step to generate the changelog automatically.
+
+## Initialise Package
 
 ## Publish Package to PyPI

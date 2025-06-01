@@ -1,7 +1,13 @@
 {
     "cSpell.words": [
+        "docstrings",
+        "errorlens",
         "mkdocs",
+        "mypy",
         "pylance",
+        "pylint",
+        "pyproject",
+        "pytest",
         "usernamehw",
         "yzhang"
     ]

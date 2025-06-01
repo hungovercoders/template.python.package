@@ -3,6 +3,7 @@
         "devcontainers",
         "docstrings",
         "errorlens",
+        "Initalised",
         "mkdocs",
         "mypy",
         "pylance",
@@ -10,6 +11,8 @@
         "pyproject",
         "pytest",
         "striptags",
+        "tamasfe",
+        "topo",
         "usernamehw",
         "vivaxy",
         "yzhang"

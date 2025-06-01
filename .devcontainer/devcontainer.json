@@ -18,7 +18,8 @@
 				"streetsidesoftware.code-spell-checker",
 				"github.vscode-github-actions",
 				"vivaxy.vscode-conventional-commits",
-				"ms-vscode-remote.remote-containers"
+				"ms-vscode-remote.remote-containers",
+				"tamasfe.even-better-toml"
 			]
 		}
 	},

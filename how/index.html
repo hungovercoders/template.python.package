@@ -603,6 +603,46 @@ pip list</code></p>
 </li>
 </ol>
 <h2 id="publish-package-to-pypi">Publish Package to PyPI</h2>
+<ol>
+<li>
+<p><strong>Created a PyPI account</strong></p>
+<ul>
+<li>Created an account on <a href="https://pypi.org/account/register/" target="_blank">PyPI</a>.</li>
+<li>Created an API token for the account.</li>
+<li>Added the PyPI credentials to the GitHub repository secrets as <code>PYPI_API_TOKEN</code>.</li>
+</ul>
+</li>
+<li>
+<p><strong>Amended the CI workflow</strong></p>
+<ul>
+<li>Amended the <a href="https://github.com/hungovercoders/template.python.package/blob/main/.github/workflows/ci.yml" target="_blank"><code>.github/workflows/ci.yml</code></a> file to include a step to publish the package to PyPI if a new tag is pushed.</li>
+</ul>
+</li>
+<li>
+<p><strong>Create tag and push script</strong></p>
+<ul>
+<li>Created a <a href="https://github.com/hungovercoders/template.python.package/blob/main/scripts/tag_and_push.sh" target="_blank"><code>tag_and_push.sh</code></a> script to create a new tag and push it to the remote repository.</li>
+</ul>
+</li>
+<li>
+<p><strong>Pypi confirmation</strong></p>
+<ul>
+<li>Confirmed the package is available on PyPI by visiting <a href="https://pypi.org/project/hungovercoders-template-python-package/" target="_blank">https://pypi.org/project/hungovercoders-template-python-package/</a>.</li>
+<li>Confirmed the package can be installed using:</li>
+</ul>
+<p><code>bash
+  pip install hungovercoders-template-python-package</code></p>
+<ul>
+<li>Confirmed the package is working by running:</li>
+</ul>
+<p><code>bash
+  hungovercoders-template-hello --name griff</code></p>
+<ul>
+<li>Output should be:</li>
+</ul>
+<p><code>Hungovercoders say hello to griff!</code></p>
+</li>
+</ol>
 
 
 

@@ -1,4 +1,4 @@
-name: Deploy MkDocs to GitHub Pages
+name: build-mkdocs-gh-pages-branch
 
 on:
   push:

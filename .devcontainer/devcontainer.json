@@ -17,13 +17,15 @@
 				"redhat.vscode-yaml",
 				"streetsidesoftware.code-spell-checker",
 				"github.vscode-github-actions",
-				"vivaxy.vscode-conventional-commits"
+				"vivaxy.vscode-conventional-commits",
+				"ms-vscode-remote.remote-containers"
 			]
 		}
 	},
-	// Install Python requirements after container creation
+	// Install requirements after container creation
 	"postCreateCommand": [
 		"pip3 install -r .devcontainer/requirements_dev.txt",
-		"pip3 install -r .devcontainer/requirements_docs.txt"
+		"pip3 install -r .devcontainer/requirements_docs.txt",
+		"curl -sSL https://github.com/orhun/git-cliff/releases/latest/download/git-cliff-linux-x86_64.tar.gz | tar -xz -C /usr/local/bin git-cliff"
 	]
 }

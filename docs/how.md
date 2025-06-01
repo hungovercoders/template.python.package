@@ -79,8 +79,19 @@
 
 ## Initialise Package
 
-```bash
-uv init --lib hungovercoders_template_python_package
-```
+1. **Initialised the package using [uv](https://github.com/ultraq/uv)**
+
+      - Execute script below to initialise package.
+  
+      ```bash
+      uv init --lib hungovercoders_template_python_package
+      ```
+
+      - Moved pyproject.toml and python-version file along with src folder to the root of the repo and cleared up directory.
+      - Added greetings module with hello function with the ability to call cli.
+      - Updated pyproject.toml file with appropriate configuration details including a cli call to the hello function.
+
+2. **Added tests for the package**
+      - Created a `tests` directory with an initial [`test_hello.py`](
 
 ## Publish Package to PyPI

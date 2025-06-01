@@ -23,10 +23,5 @@
 			]
 		}
 	},
-	// Install requirements after container creation
-	"postCreateCommand": [
-		"pip3 install -r .devcontainer/requirements_dev.txt",
-		"pip3 install -r .devcontainer/requirements_docs.txt",
-		"curl -sSL https://github.com/orhun/git-cliff/releases/latest/download/git-cliff-linux-x86_64.tar.gz | tar -xz -C /usr/local/bin git-cliff"
-	]
+	"postCreateCommand":  "pip install -r requirements_dev.txt && pip install -r requirements_docs.txt"
 }

@@ -8,6 +8,7 @@ on:
       - 'v*'
     paths:
       - 'src/**'
+      - 'tests/**'
       - 'pyproject.toml'
       - '.python-version'
       - '.github/workflows/ci.yml'

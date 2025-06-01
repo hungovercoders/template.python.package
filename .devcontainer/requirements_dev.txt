@@ -1,2 +1,4 @@
-pytest
 ruff
+pytest
+pytest-cov 
+pytest-xdist

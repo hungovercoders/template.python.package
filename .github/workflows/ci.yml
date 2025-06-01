@@ -35,7 +35,7 @@ jobs:
 
       - name: Run tests with coverage and JUnit output
         run: |
-          pip install .devcontainer/requirements_dev.txt
+          pip install -r .devcontainer/requirements_dev.txt
           pytest \
             --junit-xml=pytest-results.xml \
             --cov=src \

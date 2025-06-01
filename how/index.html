@@ -521,8 +521,27 @@ pip list</code></p>
 </li>
 </ol>
 <h2 id="initialise-package">Initialise Package</h2>
-<pre><code class="language-bash">uv init --lib hungovercoders_template_python_package
-</code></pre>
+<ol>
+<li>
+<p><strong>Initialised the package using <a href="https://github.com/ultraq/uv">uv</a></strong></p>
+<ul>
+<li>Execute script below to initialise package.</li>
+</ul>
+<p><code>bash
+  uv init --lib hungovercoders_template_python_package</code></p>
+<ul>
+<li>Moved pyproject.toml and python-version file along with src folder to the root of the repo and cleared up directory.</li>
+<li>Added greetings module with hello function with the ability to call cli.</li>
+<li>Updated pyproject.toml file with appropriate configuration details including a cli call to the hello function.</li>
+</ul>
+</li>
+<li>
+<p><strong>Added tests for the package</strong></p>
+<ul>
+<li>Created a <code>tests</code> directory with an initial [<code>test_hello.py</code>](</li>
+</ul>
+</li>
+</ol>
 <h2 id="publish-package-to-pypi">Publish Package to PyPI</h2>
 
 

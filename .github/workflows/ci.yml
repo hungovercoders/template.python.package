@@ -33,6 +33,12 @@ jobs:
       - name: Run linter
         run: uvx ruff check
 
+      - name: Build distribution
+        run: uv build
+
+      - name: Check distribution with twine
+        run: uvx twine check dist/*
+
       - name: Install package for testing
         run: |
           pip install -e .
@@ -45,16 +51,18 @@ jobs:
             --cov=src \
             --cov-report=xml \
             --cov-report=term \
+            --cov-fail-under=100 \
             > test_output.txt
-        continue-on-error: true
 
       - name: Upload test results
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: pytest-results
           path: pytest-results.xml
 
       - name: Upload coverage report
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: coverage-report
@@ -74,8 +82,10 @@ jobs:
           cat test_output.txt >> $GITHUB_STEP_SUMMARY
           echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
 
-      - name: Build distribution
-        run: uv build
-
-      - name: Check distribution with twine
-        run: uvx twine check dist/*
+      - name: Write coverage summary to GitHub Actions UI
+        if: always()
+        run: |
+          echo "## 📊 Coverage Report" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+          uvx coverage report --show-missing >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY

@@ -9,6 +9,7 @@
         "pylint",
         "pyproject",
         "pytest",
+        "striptags",
         "usernamehw",
         "vivaxy",
         "yzhang"

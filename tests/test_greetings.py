@@ -34,18 +34,18 @@ def test_hello_cli_with_name(monkeypatch, capsys):
         captured = capsys.readouterr()
         assert "Hungovercoders say goodbye to Charlie!" in captured.out
 
-    def test_goodbye_cli_default(monkeypatch, capsys):
-        """Test goodbye_cli with default argument (no --name)."""
-        test_args = ["prog"]
-        monkeypatch.setattr(sys, "argv", test_args)
-        greetings.goodbye_cli()
-        captured = capsys.readouterr()
-        assert "Hungovercoders say goodbye to World!" in captured.out
+def test_goodbye_cli_default(monkeypatch, capsys):
+    """Test goodbye_cli with default argument (no --name)."""
+    test_args = ["prog"]
+    monkeypatch.setattr(sys, "argv", test_args)
+    greetings.goodbye_cli()
+    captured = capsys.readouterr()
+    assert "Hungovercoders say goodbye to World!" in captured.out
 
-    def test_goodbye_cli_with_name(monkeypatch, capsys):
-        """Test goodbye_cli with --name argument."""
-        test_args = ["prog", "--name", "Dana"]
-        monkeypatch.setattr(sys, "argv", test_args)
-        greetings.goodbye_cli()
-        captured = capsys.readouterr()
-        assert "Hungovercoders say goodbye to Dana!" in captured.out
+def test_goodbye_cli_with_name(monkeypatch, capsys):
+    """Test goodbye_cli with --name argument."""
+    test_args = ["prog", "--name", "Dana"]
+    monkeypatch.setattr(sys, "argv", test_args)
+    greetings.goodbye_cli()
+    captured = capsys.readouterr()
+    assert "Hungovercoders say goodbye to Dana!" in captured.out

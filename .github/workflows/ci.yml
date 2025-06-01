@@ -35,6 +35,7 @@ jobs:
 
       - name: Run tests with coverage and JUnit output
         run: |
+          pip install pytest
           pytest \
             --junitxml=pytest-results.xml \
             --cov=src \

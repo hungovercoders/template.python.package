@@ -1,0 +1,6 @@
+site_name: Hungovercoders Template Python Package
+theme:
+  name: material
+
+markdown_extensions:
+  - admonition

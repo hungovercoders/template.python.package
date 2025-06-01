@@ -2,7 +2,7 @@
 
 ## Initialise Repo and Environment
 
-1. **Created a new repository on GitHub.** 
+1. **Created a new repository on GitHub.**
       - Gave an appropriate name and description.
       - Added a README file.
       - Added a .gitignore file for Python.
@@ -13,18 +13,19 @@
 1. **Added Copilot Context File**
       - Created a [`.github/copilot-instructions.md`](https://github.com/hungovercoders/template.python.package/blob/main/.github/copilot-instructions.md){target="_blank"} file to provide context for Copilot.
 
-2. **Opened in codespaces and amended environment configuration.**
+1. **Opened in codespaces and amended environment configuration.**
       - Added a [`devcontainer.json`](https://github.com/hungovercoders/template.python.package/blob/main/.devcontainer/devcontainer.json){target="_blank"} file to configure the development environment.
       - Added a [requirements](https://github.com/hungovercoders/template.python.package/blob/main/.devcontainer/requirements.txt){target="_blank"} file for the packages required for development.
 
-3. **Reopened the codespace to confirm devcontainer configuration**
+1. **Reopened the codespace to confirm devcontainer configuration**
     - Confirmed VS code extensions installed.
     - Leveraged errorlens and spell checker to clean-up any markdown or spelling errors.
 
     ![Error Lens and Spell Checker](./images/errorlens_spellcheck.PNG)
 
     - Confirmed package requirements installed in the codespace.
-    ```
+  
+    ```bash
     pip list
     ```
 
@@ -36,11 +37,14 @@
    - Created a [`mkdocs.yml`](https://github.com/hungovercoders/template.python.package/blob/main/mkdocs.yml){target="_blank"} file to configure the documentation.
    - Created a `docs` directory with an initial [`index.md`](https://github.com/hungovercoders/template.python.package/blob/main/docs/index.md){target="_blank"} file.
    - Built the documentation using:
-     ```
+
+     ```bash
      mkdocs build --strict
      ```
+
    - Served the documentation locally to confirm it works:
-     ```
+
+     ```bash
      mkdocs serve --strict
      ```
 

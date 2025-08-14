@@ -6,6 +6,21 @@ set -euo pipefail
 # Helpers
 print_err() { printf '%s\n' "$*" >&2; }
 
+# Check and fix virtual environment issues
+check_venv() {
+  if [ -d ".venv" ]; then
+    # Check if the Python interpreter in venv is accessible
+    if [ -f ".venv/bin/python3" ]; then
+      if ! ".venv/bin/python3" --version >/dev/null 2>&1; then
+        echo "⚠️  Detected corrupted virtual environment, cleaning up..."
+        rm -rf .venv
+        return 1
+      fi
+    fi
+  fi
+  return 0
+}
+
 # Determine privilege helper
 SUDO=""
 if [ "$(id -u)" -ne 0 ]; then
@@ -192,6 +207,11 @@ else
 fi
 
 if command -v task >/dev/null 2>&1; then
+  # Check for corrupted virtual environment and clean it if needed
+  if ! check_venv; then
+    echo "🔄 Virtual environment was cleaned, will be recreated during install"
+  fi
+  
   # Always ensure core dependencies are installed first
   echo "🔧 Installing core dependencies..."
   task install --force || {

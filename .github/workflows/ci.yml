@@ -34,7 +34,7 @@ jobs:
 
       - name: Use Taskfile to install deps, lint and build
         run: |
-          task ci --verbose
+          task ci-force --verbose
 
       # - name: Run tests with coverage and JUnit output
       #   run: |

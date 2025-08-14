@@ -162,9 +162,25 @@ else
 fi
 
 if command -v task >/dev/null 2>&1; then
-  task setup-workspace --force
+  # Always ensure core dependencies are installed first
+  echo "🔧 Installing core dependencies..."
+  task install --force || {
+    print_err "Failed to install core dependencies. Please check your environment."
+    exit 1
+  }
+  
+  # Try to install VS Code extensions, but don't fail the entire setup
+  echo "🔌 Attempting to install VS Code extensions..."
+  if task install-vscode-extensions --force 2>/dev/null; then
+    echo "✅ Extensions installed successfully"
+  else
+    echo "⚠️  Extension installation skipped (VS Code CLI not available during postcreate)"
+    echo "📋 Extensions are configured and will be recommended when VS Code starts"
+  fi
+  
+  echo "✅ Workspace setup completed successfully"
 else
-  print_err "Task is not installed. Skipping 'task setup-workspace'."
+  print_err "Task is not installed. Skipping workspace setup."
 fi
 
 echo '✅ Setup completed successfully.'

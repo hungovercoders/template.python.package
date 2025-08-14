@@ -66,6 +66,12 @@ tasks:
     cmds:
       - echo "✅ Workspace setup completed with all dependencies and extensions"
 
+  setup-core:
+    desc: Setup core workspace without VS Code extensions (for postcreate)
+    deps: [install]
+    cmds:
+      - echo "✅ Core workspace setup completed (extensions will be recommended separately)"
+
   build:
     desc: Build the package
     deps: [install]

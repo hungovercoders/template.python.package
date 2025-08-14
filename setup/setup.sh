@@ -42,7 +42,7 @@ apt_retry() {
 if [ "$(uname -s)" = "Linux" ]; then
   # Ensure apt is available
   if command -v apt-get >/dev/null 2>&1; then
-    apt_retry python3-venv curl python3-pip || {
+    apt_retry python3-venv curl python3-pip git || {
       print_err "Unable to install system packages via apt-get."
       exit 1
     }
@@ -52,9 +52,9 @@ if [ "$(uname -s)" = "Linux" ]; then
 else
   # macOS / others: recommend Homebrew
   if command -v brew >/dev/null 2>&1; then
-    brew install python3 curl || true
+    brew install python3 curl git || true
   else
-    print_err "Non-Linux system detected and Homebrew not available. Install python3 and curl manually."
+    print_err "Non-Linux system detected and Homebrew not available. Install python3, curl, and git manually."
   fi
 fi
 
@@ -63,19 +63,29 @@ if ! command -v pip3 >/dev/null 2>&1; then
   print_err "pip3 not found after installing python3-pip. You may need to install pip manually."
 fi
 
-# Install uv (prefer --user for non-root)
+# Install uv (prefer --user for non-root, use --break-system-packages in containers)
 if python3 -m pip show uv >/dev/null 2>&1; then
   printf 'uv is already installed\n'
 else
   if [ "$(id -u)" -eq 0 ]; then
-    python3 -m pip install --upgrade pip
-    python3 -m pip install uv
+    python3 -m pip install --upgrade pip --break-system-packages
+    python3 -m pip install uv --break-system-packages
   else
-    python3 -m pip install --user --upgrade pip
-    python3 -m pip install --user uv
+    # Try user install first, fallback to break-system-packages if needed (for containers)
+    if ! python3 -m pip install --user --upgrade pip 2>/dev/null; then
+      python3 -m pip install --upgrade pip --break-system-packages 2>/dev/null || true
+    fi
+    if ! python3 -m pip install --user uv 2>/dev/null; then
+      python3 -m pip install uv --break-system-packages 2>/dev/null || {
+        print_err "Failed to install uv. Please install manually."
+        exit 1
+      }
+    fi
     # Ensure user's local bin is on PATH suggestion
     local_bin="$(python3 -m site --user-base)/bin"
-    printf 'If "uv" is not found after install, add %s to your PATH (e.g. export PATH="$PATH:%s")\n' "$local_bin" "$local_bin"
+    if [ -d "$local_bin" ]; then
+      printf 'If "uv" is not found after install, add %s to your PATH (e.g. export PATH="$PATH:%s")\n' "$local_bin" "$local_bin"
+    fi
   fi
 fi
 
@@ -99,6 +109,59 @@ if command -v curl >/dev/null 2>&1; then
     echo "✅ Curl is installed"
 else
     echo "❌ Curl is not installed"
+fi
+
+    fi
+fi
+
+# Configure git for container environments (fix dubious ownership issues)
+if command -v git >/dev/null 2>&1; then
+    echo "✅ Git is installed"
+    # Fix common container ownership issues
+    git config --global --add safe.directory /workspaces/template.python.package 2>/dev/null || true
+    git config --global --add safe.directory '*' 2>/dev/null || true
+    
+    # Set up basic git config if not already configured (fallback for containers)
+    if ! git config --global user.name >/dev/null 2>&1; then
+        git config --global user.name "${GITHUB_USER:-template.python.package}" 2>/dev/null || true
+    fi
+    if ! git config --global user.email >/dev/null 2>&1; then
+        git config --global user.email "${GITHUB_EMAIL:-template.python.package@hungovercoders.com}" 2>/dev/null || true
+    fi
+else
+    echo "❌ Git is not installed"
+fi
+
+# Install Task (Taskfile) - https://taskfile.dev
+if command -v task >/dev/null 2>&1; then
+    echo "✅ Task is already installed"
+else
+    echo "📦 Installing Task (Taskfile)..."
+    if [ "$(uname -s)" = "Linux" ]; then
+        # Install Task using the official installer script
+        sh -c "$(curl --location https://taskfile.dev/install.sh)" -- -d -b /usr/local/bin 2>/dev/null || {
+            # Fallback: try installing to user's local bin if no sudo access
+            local_bin="$(python3 -m site --user-base)/bin"
+            mkdir -p "$local_bin"
+            sh -c "$(curl --location https://taskfile.dev/install.sh)" -- -d -b "$local_bin" || {
+                print_err "Failed to install Task. Please install manually: https://taskfile.dev/installation/"
+            }
+        }
+    else
+        # macOS: recommend manual install or homebrew
+        if command -v brew >/dev/null 2>&1; then
+            brew install go-task || print_err "Failed to install Task via Homebrew"
+        else
+            print_err "Please install Task manually: https://taskfile.dev/installation/"
+        fi
+    fi
+    
+    # Check if installation was successful
+    if command -v task >/dev/null 2>&1; then
+        echo "✅ Task is installed"
+    else
+        echo "❌ Task installation failed"
+    fi
 fi
 
 printf 'Setup completed successfully.\n'

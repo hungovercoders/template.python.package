@@ -128,12 +128,6 @@ tasks:
       - uv run pytest -v --tb=short
 
   test-watch:
-    desc: Run tests in watch mode (reruns when files change)
-    deps: [install]
-    cmds:
-      - uv run python scripts/test_watcher.py
-
-  test-watch-simple:
     desc: Simple watch mode - manually press Enter to rerun tests
     deps: [install]
     cmds:

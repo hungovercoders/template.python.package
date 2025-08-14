@@ -58,7 +58,7 @@ def test_cli_valid(
     monkeypatch: pytest.MonkeyPatch,
     capsys: pytest.CaptureFixture,
     tmp_path: Path,
-    valid_org_data: dict
+    valid_org_data: dict,
 ) -> None:
     """Test CLI with valid input file."""
     file = tmp_path / "org.json"
@@ -71,8 +71,7 @@ def test_cli_valid(
 
 
 def test_cli_show_schema(
-    monkeypatch: pytest.MonkeyPatch,
-    capsys: pytest.CaptureFixture
+    monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture
 ) -> None:
     """Test CLI --show-schema prints schema and exits."""
     test_args = ["prog", "--show-schema"]

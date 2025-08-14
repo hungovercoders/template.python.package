@@ -95,8 +95,7 @@ def main() -> None:
 
     if not args.input:
         parser.error(
-            "the following arguments are required: input "
-            "(unless --show-schema is used)"
+            "the following arguments are required: input (unless --show-schema is used)"
         )
 
     # Read input data

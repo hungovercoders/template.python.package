@@ -167,4 +167,4 @@ else
   print_err "Task is not installed. Skipping 'task setup-workspace'."
 fi
 
-print 'Setup completed successfully.\n'
+echo '✅ Setup completed successfully.'

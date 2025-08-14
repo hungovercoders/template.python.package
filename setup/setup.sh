@@ -168,3 +168,14 @@ else
 fi
 
 echo '✅ Setup completed successfully.'
+
+# Reload VS Code window to ensure all extensions are activated
+if command -v code >/dev/null 2>&1; then
+    echo "🔄 Reloading VS Code window to activate extensions..."
+    # Use VS Code CLI to reload the window (works in devcontainers/codespaces)
+    code --command workbench.action.reloadWindow 2>/dev/null || {
+        echo "ℹ️  Please manually reload VS Code window (Ctrl+Shift+P → 'Developer: Reload Window') to fully activate extensions"
+    }
+else
+    echo "ℹ️  VS Code CLI not found. Extensions will activate when VS Code is next reloaded."
+fi

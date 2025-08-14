@@ -162,7 +162,7 @@ else
 fi
 
 if command -v task >/dev/null 2>&1; then
-  task setup-workspace
+  task setup-workspace --force
 else
   print_err "Task is not installed. Skipping 'task setup-workspace'."
 fi

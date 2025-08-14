@@ -34,11 +34,11 @@ tasks:
       - .venv/pyvenv.cfg
     cmds:
       - uv sync --all-extras --dev
-      - pip install -e .
+      - uv pip install -e .
       - |
         # Only run the demo CLI when running interactively (prevents hanging in CI/background)
         if [ -t 1 ]; then
-          hungovercoders-template-hello --name "{{.GITUSER}}"
+          uv run hungovercoders-template-hello --name "{{.GITUSER}}"
         else
           echo "Skipping interactive demo: non-interactive shell detected"
         fi

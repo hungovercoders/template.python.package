@@ -111,9 +111,6 @@ else
     echo "❌ Curl is not installed"
 fi
 
-    fi
-fi
-
 # Configure git for container environments (fix dubious ownership issues)
 if command -v git >/dev/null 2>&1; then
     echo "✅ Git is installed"
@@ -164,4 +161,10 @@ else
     fi
 fi
 
-printf 'Setup completed successfully.\n'
+if command -v task >/dev/null 2>&1; then
+  task setup-workspace
+else
+  print_err "Task is not installed. Skipping 'task setup-workspace'."
+fi
+
+print 'Setup completed successfully.\n'

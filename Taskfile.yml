@@ -56,7 +56,13 @@ tasks:
     cmds:
       - uv sync --all-extras --dev
       - pip install -e .
-      - hungovercoders-template-hello --name "{{.GITUSER}}"
+      - |
+        # Only run the demo CLI when running interactively (prevents hanging in CI/background)
+        if [ -t 1 ]; then
+          hungovercoders-template-hello --name "{{.GITUSER}}"
+        else
+          echo "Skipping interactive demo: non-interactive shell detected"
+        fi
 
   install-vscode-extensions:
     desc: Install all recommended VSCode extensions
@@ -105,7 +111,9 @@ tasks:
       - pyproject.toml
       - Taskfile.yml
     cmds:
-      - uvx ruff check
+      - |
+        # Fail fast if lint hangs: 5 minute timeout
+        timeout 5m uvx ruff check
       - uvx twine check dist/*
 
   test:
@@ -117,7 +125,9 @@ tasks:
       - pyproject.toml
       - Taskfile.yml
     cmds:
-      - uv run pytest --cov=src --cov-report=term --cov-report=xml
+      - |
+        # Fail tests if they hang: 10 minute timeout. Produce junit and coverage artifacts and capture console output.
+        timeout 10m uv run pytest --junit-xml=pytest-results.xml --cov=src --cov-report=xml --cov-report=term > test_output.txt 2>&1 || { cat test_output.txt; exit 1; }
 
   ci:
     desc: Run full CI pipeline

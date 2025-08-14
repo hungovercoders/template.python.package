@@ -15,17 +15,8 @@ tasks:
     cmds:
       - bash setup/setup.sh
 
-  # setup-venv:
-  #   desc: Create virtual environment if needed
-  #   deps: [setup-system]
-  #   status:
-  #     - test -d .venv
-  #   cmds:
-  #     - uv venv --clear
-
   install:
     desc: Install dependencies and package
-    # deps: [setup-venv]
     sources:
       - pyproject.toml
       - uv.lock
@@ -51,13 +42,20 @@ tasks:
     cmds:
       - |
         if [ -f .vscode/extensions.json ]; then
-          # Extract extension IDs from extensions.json and install them
-          grep -o '"[^"]*"' .vscode/extensions.json | grep -v "recommendations\|unwantedRecommendations" | tr -d '"' | while read -r extension; do
-            if [ -n "$extension" ]; then
-              echo "Installing extension: $extension"
-              code --install-extension "$extension" --force
-            fi
-          done
+          # Check if code command is available
+          if command -v code >/dev/null 2>&1; then
+            echo "Installing VS Code extensions..."
+            # Extract extension IDs from extensions.json and install them
+            grep -o '"[^"]*"' .vscode/extensions.json | grep -v "recommendations\|unwantedRecommendations" | tr -d '"' | while read -r extension; do
+              if [ -n "$extension" ]; then
+                echo "Installing extension: $extension"
+                code --install-extension "$extension" --force 2>/dev/null || echo "Failed to install $extension"
+              fi
+            done
+          else
+            echo "⚠️  VS Code CLI not available. Extensions will be installed when VS Code starts."
+            echo "Extensions listed in .vscode/extensions.json will be automatically recommended."
+          fi
         else
           echo "No .vscode/extensions.json found"
         fi

@@ -177,5 +177,7 @@ if command -v code >/dev/null 2>&1; then
         echo "ℹ️  Please manually reload VS Code window (Ctrl+Shift+P → 'Developer: Reload Window') to fully activate extensions"
     }
 else
-    echo "ℹ️  VS Code CLI not found. Extensions will activate when VS Code is next reloaded."
+    echo "ℹ️  VS Code CLI not available during setup (normal in postcreate)."
+    echo "📋 Extensions are configured in .vscode/extensions.json and will be recommended when VS Code starts."
+    echo "🚀 Development environment is ready!"
 fi

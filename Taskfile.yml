@@ -1,0 +1,193 @@
+# https://taskfile.dev
+
+version: '3'
+
+vars:
+  GREETING: Hello, World!
+  GITUSER:
+    sh: git config user.name || echo "Unknown User"
+tasks:
+
+  help:
+    desc: Show available tasks and short descriptions
+    cmds:
+      - |
+        # Prefer the `task` CLI output if installed
+        if command -v task >/dev/null 2>&1; then
+          task --list-all 2>/dev/null || task --list 2>/dev/null
+          exit 0
+        fi
+        # Fallback: parse Taskfile.yml for "task: desc" pairs
+        echo "Available tasks (parsed from Taskfile.yml):"
+        awk '
+          /^[[:space:]]{2}[A-Za-z0-9_:-]+:/ {
+            gsub(/^[[:space:]]+/,""); sub(/:$/,""); task=$0; next
+          }
+          /^[[:space:]]{4}desc:/ {
+            d=$0; gsub(/^[[:space:]]+desc:[[:space:]]*/,"",d);
+            print " - " task " : " d
+          }
+        ' Taskfile.yml
+        
+  setup-system:
+    desc: Install system dependencies
+    sources:
+      - setup/*
+    cmds:
+      - bash setup/setup.sh
+
+  setup-venv:
+    desc: Create virtual environment if needed
+    deps: [setup-system]
+    status:
+      - test -d .venv
+    cmds:
+      - uv venv
+
+  install:
+    desc: Install dependencies and package
+    deps: [setup-venv]
+    sources:
+      - pyproject.toml
+      - uv.lock
+      - Taskfile.yml
+    generates:
+      - .venv/pyvenv.cfg
+    cmds:
+      - uv sync --all-extras --dev
+      - pip install -e .
+      - hungovercoders-template-hello --name "{{.GITUSER}}"
+
+  install-vscode-extensions:
+    desc: Install all recommended VSCode extensions
+    sources:
+      - .vscode/extensions.json
+      - Taskfile.yml
+    cmds:
+      - |
+        if [ -f .vscode/extensions.json ]; then
+          # Extract extension IDs from extensions.json and install them
+          grep -o '"[^"]*"' .vscode/extensions.json | grep -v "recommendations\|unwantedRecommendations" | tr -d '"' | while read -r extension; do
+            if [ -n "$extension" ]; then
+              echo "Installing extension: $extension"
+              code --install-extension "$extension" --force
+            fi
+          done
+        else
+          echo "No .vscode/extensions.json found"
+        fi
+
+  setup-workspace:
+    desc: Setup complete workspace with extensions and dependencies
+    deps: [install, install-vscode-extensions]
+    cmds:
+      - echo "✅ Workspace setup completed with all dependencies and extensions"
+
+  build:
+    desc: Build the package
+    deps: [install]
+    sources:
+      - src/**/*.py
+      - pyproject.toml
+      - Taskfile.yml
+    generates:
+      - dist/*.whl
+      - dist/*.tar.gz
+    cmds:
+      - uv build
+
+  lint:
+    desc: Run linting and build checks
+    deps: [build]
+    sources:
+      - src/**/*.py
+      - tests/**/*.py
+      - pyproject.toml
+      - Taskfile.yml
+    cmds:
+      - uvx ruff check
+      - uvx twine check dist/*
+
+  test:
+    desc: Run tests with coverage
+    deps: [install]
+    sources:
+      - src/**/*.py
+      - tests/**/*.py
+      - pyproject.toml
+      - Taskfile.yml
+    cmds:
+      - uv run pytest --cov=src --cov-report=term --cov-report=xml
+
+  ci:
+    desc: Run full CI pipeline
+    deps: [lint, test]
+    cmds:
+      - echo "✅ CI pipeline completed successfully"
+
+  clean-ci:
+    desc: Clean build artifacts and task cache
+    cmds:
+      - rm -rf dist/
+      - rm -rf build/
+      - rm -rf *.egg-info/
+      - rm -rf .task/
+      - find . -type d -name __pycache__ -exec rm -rf {} +
+      - find . -name "*.pyc" -delete
+      - echo "✅ CI artifacts cleaned successfully" 
+
+  docs:
+    desc: Build documentation with MkDocs
+    deps: [install]
+    sources:
+      - docs/**/*.md
+      - mkdocs.yml
+      - src/**/*.py
+      - Taskfile.yml
+    generates:
+      - site/index.html
+    cmds:
+      - uv run mkdocs build --strict
+
+  docs-serve:
+    desc: Serve documentation locally
+    deps: [install]
+    cmds:
+      - uv run mkdocs serve --strict --dev-addr 0.0.0.0:8000
+
+  docs-deploy:
+    desc: Deploy documentation to GitHub Pages
+    deps: [docs]
+    cmds:
+      - uv run mkdocs gh-deploy
+
+  clean-docs:
+    desc: Clean docs build artifacts
+    cmds:
+      - rm -rf site/
+      - echo "✅ Docs artifacts cleaned successfully" 
+
+  clean:
+    desc: Clean build artifacts and task cache
+    deps: [clean-docs, clean-ci]
+    cmds:
+      - echo "✅ Artifacts cleaned successfully"
+
+  # Development helper tasks
+  docs-force:
+    desc: Force rebuild documentation
+    cmds:
+      - task docs --force
+
+  ci-force:
+    desc: Force run entire CI pipeline
+    cmds:
+      - task ci --force
+
+  debug:
+    desc: Show task status for debugging
+    cmds:
+      - echo "=== Task Status Debug ==="
+      - task --dry docs
+      - task --dry build
+      - task --dry test

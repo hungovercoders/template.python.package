@@ -14,7 +14,6 @@ SCHEMA_PATH = Path(__file__).parent.parent / "src" / "hungovercoders_template_py
 def valid_org_data() -> dict:
     return {
         "name": "Hungover Coders Inc.",
-        "founded": "2020-01-01",
         "teams": [
             {"team_name": "Beer"},
             {"team_name": "Whiskey"},

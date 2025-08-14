@@ -1,6 +1,6 @@
 import argparse
 
-TODO: look to user typer library instead 
+## TODO: look to user typer library instead 
 
 def hello(name: str) -> None:
     """Greet the user by name."""

@@ -113,7 +113,7 @@
 
       - Output should be:
 
-      ```
+      ```bash
       Hungovercoders say hello to griff!
       ```
 
@@ -124,6 +124,7 @@
       ```bash
       pytest
       ```
+
       - Confirmed tests pass and package is functioning as expected.
       ![Pytest Output](./images/pytest_output.PNG)
 
@@ -156,7 +157,6 @@
       - Test results can be seen to be published correctly.
          ![CI Output](./images/ci_output.PNG)
 
-
 ## Publish Package to PyPI
 
 1. **Created a PyPI account**
@@ -186,7 +186,7 @@
 
       - Output should be:
 
-      ```
+      ```bash
       Hungovercoders say hello to griff!
       ```
 

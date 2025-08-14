@@ -5,22 +5,28 @@
         "devcontainers",
         "docstrings",
         "errorlens",
+        "GITUSER",
         "Initalised",
         "Linted",
         "mkdocs",
         "mypy",
+        "pycache",
         "pylance",
         "pylint",
         "pypa",
         "pypi",
         "pyproject",
         "pytest",
+        "pyvenv",
         "sdist",
         "setuptools",
         "striptags",
         "tamasfe",
+        "Taskfile",
         "topo",
         "usernamehw",
+        "vars",
+        "venv",
         "vivaxy",
         "xdist",
         "yzhang"
@@ -29,5 +35,6 @@
         "tests"
     ],
     "python.testing.unittestEnabled": false,
-    "python.testing.pytestEnabled": true
+    "python.testing.pytestEnabled": true,
+    
 }

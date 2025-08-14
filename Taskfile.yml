@@ -124,6 +124,14 @@ tasks:
       - |
         # Fail tests if they hang: 10 minute timeout. Produce junit and coverage artifacts and capture console output.
         timeout 10m uv run pytest --junit-xml=pytest-results.xml --cov=src --cov-report=xml --cov-report=term > test_output.txt 2>&1 || { cat test_output.txt; exit 1; }
+      - |
+        if [ -f test_output.txt ]; then
+          echo "📄 Last Test Output (from test_output.txt):"
+          echo "==========================================="
+          cat test_output.txt
+        else
+          echo "❌ No test_output.txt found. Run 'task test' first."
+        fi
 
   test-dev:
     desc: Run tests with live output (development mode)

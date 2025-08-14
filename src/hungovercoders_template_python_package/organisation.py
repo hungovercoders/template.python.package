@@ -1,21 +1,21 @@
-"""
-Module for validating organisation data against the organisation schema.
-"""
+"""Module for validating organisation data against the organisation schema."""
+
+import argparse
 import json
+import logging
+import sys
 from pathlib import Path
 from typing import Any, Dict
-import logging
+
 import jsonschema
-import argparse
-import sys
 
 logger = logging.getLogger(__name__)
 
 SCHEMA_PATH = Path(__file__).parent / "schemas" / "organisation_schema.json"
 
+
 def load_schema(schema_path: Path = SCHEMA_PATH) -> Dict[str, Any]:
-    """
-    Load a JSON schema from a file.
+    """Load a JSON schema from a file.
 
     Args:
         schema_path (Path): Path to the JSON schema file.
@@ -24,19 +24,23 @@ def load_schema(schema_path: Path = SCHEMA_PATH) -> Dict[str, Any]:
         Dict[str, Any]: The loaded JSON schema.
     """
     try:
-        with open(schema_path, "r", encoding="utf-8") as f:
+        with open(schema_path, encoding="utf-8") as f:
             return json.load(f)
     except Exception as e:
         logger.error(f"Failed to load schema: {e}")
         raise
 
-def validate_organisation(data: Dict[str, Any], schema: Dict[str, Any] | None = None) -> None:
-    """
-    Validate organisation data against the organisation schema.
+
+def validate_organisation(
+    data: Dict[str, Any], schema: Dict[str, Any] | None = None
+) -> None:
+    """Validate organisation data against the organisation schema.
 
     Args:
         data (Dict[str, Any]): The organisation data to validate.
-        schema (Dict[str, Any] | None, optional): The schema to validate against. If None, loads default.
+        schema (Dict[str, Any] | None, optional):
+            The schema to validate against.
+        If None, loads default.
 
     Raises:
         jsonschema.ValidationError: If validation fails.
@@ -46,7 +50,9 @@ def validate_organisation(data: Dict[str, Any], schema: Dict[str, Any] | None = 
     try:
         # Use jsonschema.RefResolver to resolve local references
         schema_dir = SCHEMA_PATH.parent.resolve()
-        resolver = jsonschema.RefResolver(base_uri=f"file://{schema_dir}/", referrer=schema)
+        resolver = jsonschema.RefResolver(
+            base_uri=f"file://{schema_dir}/", referrer=schema
+        )
         jsonschema.validate(instance=data, schema=schema, resolver=resolver)
     except jsonschema.ValidationError as e:
         logger.error(f"Validation error: {e.message}")
@@ -55,29 +61,30 @@ def validate_organisation(data: Dict[str, Any], schema: Dict[str, Any] | None = 
         logger.error(f"Unexpected error during validation: {e}")
         raise
 
+
 def main() -> None:
-    """
-    CLI entry point for validating organisation JSON files against the schema.
-    """
+    """CLI entry point for validating organisation JSON files."""
     parser = argparse.ArgumentParser(
-        description="Validate an organisation JSON file against the organisation schema."
+        description="Validate an organisation JSON file, "
+        "against the organisation schema."
     )
     parser.add_argument(
         "input",
         type=str,
         nargs="?",
-        help="Path to the organisation JSON file to validate. Use '-' to read from stdin."
+        help="Path to the organisation JSON file to validate. "
+        "Use '-' to read from stdin.",
     )
     parser.add_argument(
         "--output-format",
         choices=["human", "json"],
         default="human",
-        help="Output format: human-readable or JSON."
+        help="Output format: human-readable or JSON.",
     )
     parser.add_argument(
         "--show-schema",
         action="store_true",
-        help="Print the organisation schema and exit."
+        help="Print the organisation schema and exit.",
     )
     args = parser.parse_args()
 
@@ -87,14 +94,17 @@ def main() -> None:
         sys.exit(0)
 
     if not args.input:
-        parser.error("the following arguments are required: input (unless --show-schema is used)")
+        parser.error(
+            "the following arguments are required: input "
+            "(unless --show-schema is used)"
+        )
 
     # Read input data
     try:
         if args.input == "-":
             data = json.load(sys.stdin)
         else:
-            with open(args.input, "r", encoding="utf-8") as f:
+            with open(args.input, encoding="utf-8") as f:
                 data = json.load(f)
     except Exception as e:
         logger.error(f"Failed to read input: {e}")
@@ -123,6 +133,7 @@ def main() -> None:
         else:
             print(f"[ERROR] Unexpected error: {e}")
         sys.exit(1)
+
 
 if __name__ == "__main__":
     main()

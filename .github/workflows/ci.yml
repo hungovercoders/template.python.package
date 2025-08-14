@@ -32,6 +32,12 @@ jobs:
           curl -sSfL https://taskfile.dev/install.sh | sh -s -- -d -b /usr/local/bin
           task --version
 
+      - name: Install Python CLI 'uv'
+        # 'uv' provides the `uv` and `uvx` CLI tools used by the Taskfile.
+        run: |
+          python3 -m pip install --upgrade pip setuptools wheel
+          python3 -m pip install uv
+
       - name: Use Taskfile to install deps, lint and build
         run: |
           task ci-force --verbose

@@ -1,43 +1,161 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
 [project]
-name = "hungovercoders_template_python_package"
+name = "hungovercoders-template-python-package"
 version = "0.1.1"
-description = "This is a template for a Python package created by Hungover Coders."
+description = "A Python package template for demonstrative purposes that can be cloned by others to quickly set up a development environment"
 license = { file = "LICENSE" }
 readme = "README.md"
 authors = [
     { name = "dataGriff", email = "info@hungovercoders.com" }
 ]
-requires-python = ">=3.12"
-dependencies = []
+requires-python = ">=3.8"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Software Development :: Code Generators",
+]
+keywords = ["template", "package", "development", "hungovercoders"]
+dependencies = [
+    "click>=8.0.0",
+    "jsonschema>=4.0.0",
+]
 
-[build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "pytest-xdist>=3.0.0",
+    "watchdog>=3.0.0",
+    "ruff>=0.1.0",
+    "mypy>=1.0.0",
+    "twine>=4.0.0",
+]
+docs = [
+    "mkdocs>=1.5.0",
+    "mkdocs-material>=9.0.0",
+]
 
 [project.scripts]
 hungovercoders-template-hello = "hungovercoders_template_python_package.greetings:hello_cli"
 hungovercoders-validate-organisation = "hungovercoders_template_python_package.organisation:main"
 
-# [tool.hatch.build]
-# include = [
-#     "src/hungovercoders_template_python_package/schemas/**/*.json"
-# ]
+[project.urls]
+Homepage = "https://github.com/hungovercoders/template.python.package"
+Repository = "https://github.com/hungovercoders/template.python.package"
+Issues = "https://github.com/hungovercoders/template.python.package/issues"
+Documentation = "https://hungovercoders.github.io/template.python.package/"
 
-# [tool.hatch.build.targets.wheel]
-# include = [
-#     "src/hungovercoders_template_python_package/schemas/**/*.json"
-# ]
+[tool.hatch.build.targets.wheel]
+packages = ["src/hungovercoders_template_python_package"]
+include = [
+    "src/hungovercoders_template_python_package/schemas/*.json",
+]
 
-# [tool.hatch.build.targets.sdist]
-# include = [
-#     "src/hungovercoders_template_python_package/schemas/**/*.json"
-# ]
+[tool.hatch.build.targets.sdist]
+include = [
+    "/src",
+    "/tests",
+    "/docs",
+    "/README.md",
+    "/LICENSE",
+    "/pyproject.toml",
+]
+exclude = [
+    "/.venv",
+    "/--force",
+    "/.git",
+    "/.github",
+    "/.task",
+    "/site",
+    "/__pycache__",
+    "*.pyc",
+    "*.pyo",
+    "*.pyd",
+    ".Python",
+    "build",
+    "develop-eggs",
+    "dist",
+    "downloads",
+    "eggs",
+    ".eggs",
+    "lib",
+    "lib64",
+    "parts",
+    "sdist",
+    "var",
+    "wheels",
+    "*.egg-info",
+    ".installed.cfg",
+    "*.egg",
+]
 
-# [tool.hatch.metadata]
-# allow-direct-references = true
+[tool.ruff]
+line-length = 88
+target-version = "py38"
+src = ["src", "tests"]
 
-[tool.setuptools.package-data]
-hungovercoders_template_python_package = [
-    "schemas/*.json",
-    "schemas/**/*.json"
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "W", "UP", "D"]
+ignore = ["E203", "D100", "D104"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+warn_unreachable = true
+strict_equality = true
+
+[[tool.mypy.overrides]]
+module = "tests.*"
+disallow_untyped_defs = false
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
+python_functions = "test_*"
+addopts = "--strict-markers --strict-config --verbose"
+
+[tool.coverage.run]
+source = ["src"]
+omit = ["*/tests/*"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if self.debug:",
+    "if settings.DEBUG",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if 0:",
+    "if __name__ == .__main__.:",
+    "class .*\\bProtocol\\):",
+    "@(abc\\.)?abstractmethod",
+]
+
+[dependency-groups]
+dev = [
+    "watchdog>=4.0.2",
 ]

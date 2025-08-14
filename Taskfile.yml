@@ -8,27 +8,6 @@ vars:
     sh: git config user.name || echo "Unknown User"
 tasks:
 
-  help:
-    desc: Show available tasks and short descriptions
-    cmds:
-      - |
-        # Prefer the `task` CLI output if installed
-        if command -v task >/dev/null 2>&1; then
-          task --list-all 2>/dev/null || task --list 2>/dev/null
-          exit 0
-        fi
-        # Fallback: parse Taskfile.yml for "task: desc" pairs
-        echo "Available tasks (parsed from Taskfile.yml):"
-        awk '
-          /^[[:space:]]{2}[A-Za-z0-9_:-]+:/ {
-            gsub(/^[[:space:]]+/,""); sub(/:$/,""); task=$0; next
-          }
-          /^[[:space:]]{4}desc:/ {
-            d=$0; gsub(/^[[:space:]]+desc:[[:space:]]*/,"",d);
-            print " - " task " : " d
-          }
-        ' Taskfile.yml
-        
   setup-system:
     desc: Install system dependencies
     sources:
@@ -36,17 +15,17 @@ tasks:
     cmds:
       - bash setup/setup.sh
 
-  setup-venv:
-    desc: Create virtual environment if needed
-    deps: [setup-system]
-    status:
-      - test -d .venv
-    cmds:
-      - uv venv
+  # setup-venv:
+  #   desc: Create virtual environment if needed
+  #   deps: [setup-system]
+  #   status:
+  #     - test -d .venv
+  #   cmds:
+  #     - uv venv --clear
 
   install:
     desc: Install dependencies and package
-    deps: [setup-venv]
+    # deps: [setup-venv]
     sources:
       - pyproject.toml
       - uv.lock
@@ -116,8 +95,21 @@ tasks:
         timeout 5m uvx ruff check
       - uvx twine check dist/*
 
+  lint-fix:
+    desc: Run linting and build checks
+    deps: [build]
+    sources:
+      - src/**/*.py
+      - tests/**/*.py
+      - pyproject.toml
+      - Taskfile.yml
+    cmds:
+      - |
+        # Fail fast if lint hangs: 5 minute timeout
+        timeout 5m uvx ruff format
+
   test:
-    desc: Run tests with coverage
+    desc: Run tests with coverage (CI mode - output to files)
     deps: [install]
     sources:
       - src/**/*.py
@@ -128,6 +120,75 @@ tasks:
       - |
         # Fail tests if they hang: 10 minute timeout. Produce junit and coverage artifacts and capture console output.
         timeout 10m uv run pytest --junit-xml=pytest-results.xml --cov=src --cov-report=xml --cov-report=term > test_output.txt 2>&1 || { cat test_output.txt; exit 1; }
+
+  test-dev:
+    desc: Run tests with live output (development mode)
+    deps: [install]
+    cmds:
+      - uv run pytest -v --tb=short
+
+  test-watch:
+    desc: Run tests in watch mode (reruns when files change)
+    deps: [install]
+    cmds:
+      - uv run python scripts/test_watcher.py
+
+  test-watch-simple:
+    desc: Simple watch mode - manually press Enter to rerun tests
+    deps: [install]
+    cmds:
+      - |
+        echo "🧪 Simple Test Watcher"
+        echo "Press Enter to run tests, Ctrl+C to exit"
+        echo "======================================"
+        while true; do
+          read -p "👀 Press Enter to run tests (Ctrl+C to exit): " 
+          echo ""
+          uv run pytest -v --tb=short
+          echo ""
+        done
+
+  test-coverage:
+    desc: Run tests with coverage report displayed
+    deps: [install]
+    cmds:
+      - uv run pytest --cov=src --cov-report=term-missing -v
+
+  test-file:
+    desc: "Run tests for a specific file (use: task test-file -- tests/test_greetings.py)"
+    deps: [install]
+    cmds:
+      - uv run pytest -v {{.CLI_ARGS}}
+
+  test-function:
+    desc: "Run a specific test function (use: task test-function -- tests/test_greetings.py::test_hello)"
+    deps: [install]
+    cmds:
+      - uv run pytest -v -s {{.CLI_ARGS}}
+
+  test-debug:
+    desc: Run tests with maximum verbosity and debug info
+    deps: [install]
+    cmds:
+      - uv run pytest -vvs --tb=long --capture=no
+
+  test-failed:
+    desc: Run only the tests that failed in the last run
+    deps: [install]
+    cmds:
+      - uv run pytest --lf -v
+
+  test-output:
+    desc: Show the output from the last CI test run
+    cmds:
+      - |
+        if [ -f test_output.txt ]; then
+          echo "📄 Last Test Output (from test_output.txt):"
+          echo "==========================================="
+          cat test_output.txt
+        else
+          echo "❌ No test_output.txt found. Run 'task test' first."
+        fi
 
   ci:
     desc: Run full CI pipeline

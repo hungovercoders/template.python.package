@@ -37,17 +37,43 @@ apt_retry() {
   return 1
 }
 
-# Install system packages (Debian/Ubuntu)
-# Only attempt apt on Linux; skip on macOS (user should use brew).
+# Retry apk commands for Alpine Linux
+apk_retry() {
+  local max_retries=8
+  local sleep_sec=2
+  local i=0
+  until [ "$i" -ge "$max_retries" ]; do
+    if $SUDO apk update && $SUDO apk add --no-cache "$@"; then
+      return 0
+    fi
+    i=$((i + 1))
+    print_err "apk failed (attempt $i/$max_retries). Retrying in ${sleep_sec}s..."
+    sleep "$sleep_sec"
+  done
+  print_err "apk failed after $max_retries attempts."
+  return 1
+}
+
+# Install system packages (Linux)
 if [ "$(uname -s)" = "Linux" ]; then
-  # Ensure apt is available
-  if command -v apt-get >/dev/null 2>&1; then
+  # Check for Alpine Linux (apk)
+  if command -v apk >/dev/null 2>&1; then
+    echo "📦 Detected Alpine Linux - using apk package manager"
+    # Alpine packages: git is already in python:alpine, but add curl and build tools
+    apk_retry curl git build-base python3-dev || {
+      print_err "Unable to install system packages via apk."
+      exit 1
+    }
+  # Check for Debian/Ubuntu (apt)
+  elif command -v apt-get >/dev/null 2>&1; then
+    echo "📦 Detected Debian/Ubuntu - using apt package manager"
     apt_retry python3-venv curl python3-pip git || {
       print_err "Unable to install system packages via apt-get."
       exit 1
     }
   else
-    print_err "apt-get not found. Please install python3-venv and curl via your package manager."
+    print_err "No supported package manager found (apk or apt-get). Please install python3-venv, curl, and git manually."
+    exit 1
   fi
 else
   # macOS / others: recommend Homebrew

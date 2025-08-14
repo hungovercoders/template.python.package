@@ -1,7 +1,7 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the
 // README at: https://github.com/devcontainers/templates/tree/main/src/python
 {
-    "name": "Python 3 - Alpine (Minimal)",
+    "name": "Python 3.12 - Alpine (~55MB)",
     "image": "python:3.12-alpine",
     "postCreateCommand": "./setup/setup.sh"
 }

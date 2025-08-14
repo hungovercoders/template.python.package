@@ -59,7 +59,7 @@ if [ "$(uname -s)" = "Linux" ]; then
   # Check for Alpine Linux (apk)
   if command -v apk >/dev/null 2>&1; then
     echo "📦 Detected Alpine Linux - using apk package manager"
-    # Alpine packages: git is already in python:alpine, but add curl and build tools
+    # Alpine packages: Python and Git are already in python:alpine, add curl and build tools
     apk_retry curl git build-base python3-dev || {
       print_err "Unable to install system packages via apk."
       exit 1
